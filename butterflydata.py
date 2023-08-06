@@ -15,16 +15,14 @@ class ButterflyDataset(Dataset):
     
     def __getitem__(self, index):
         img_path = os.path.join(self.img_dir, self.image_labels.iloc[index, 0])
-        image = read_image(img_path)
+        image = read_image(img_path).float()
         label = self.image_labels.iloc[index, 1]
         if self.transform:
             image = self.transform(image)
         if self.target_transform:
             label = self.target_transform(label)
         return image, label
-    
-def fun():
-    print(5)
+
 
     
 

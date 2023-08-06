@@ -8,12 +8,26 @@ import numpy as np
 import pandas as pd
 import torchvision.transforms as transforms
 from model import CNN as CNN
+from train import train
+
+device = torch.device("cuda")
+trainingdata = pd.read_csv("data/Training_set.csv")
+labelset = set()
+for i in range(len(trainingdata)):
+    labelset.add(trainingdata.iloc[i, 1])
+labelset = np.array(list(labelset))
+lti = {}
+for i, entry in enumerate(labelset):
+    lti[entry] = i
+itl = {value:key for (key, value) in lti.items()}
+
+
 norm_transform = transforms.Compose(
     [transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 train_dataset = ButterflyDataset(
     labels="data/Training_set.csv",
-    img_dir="data/test/",
+    img_dir="data/train/",
     transform=norm_transform,
     target_transform=None
 )
@@ -23,11 +37,12 @@ test_dataset = ButterflyDataset(
     transform=norm_transform,
     target_transform=None
 )
-train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
-x, y = next(iter(train_dataloader))
-print(x.shape)
-cnn = CNN()
-x = x.reshape(-1)
-print(x.shape)
-output = cnn(x)
-print(output.shape)
+train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+
+
+test_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+cnn = CNN().to(device)
+epochs = 100
+optimizer = "SGD"
+loss = "cross_entropy"
+train(loss, optimizer, cnn, train_dataloader, test_dataloader, epochs, device, lti, itl)
