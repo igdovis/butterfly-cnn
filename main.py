@@ -42,9 +42,8 @@ test_dataset = ButterflyDataset(
     target_transform=target_transform
 )
 train_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=True)
-
-
 test_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=False)
+
 cnn = CNN().to(device)
 epochs = 20
 optimizer = "SGD"
