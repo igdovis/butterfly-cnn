@@ -13,11 +13,9 @@ from train import train, evaluate
 device = torch.device("cuda")
 trainingdata = pd.read_csv("data/Training_set.csv")
 labelset = sorted(trainingdata['label'].unique().tolist())
-print(labelset)
 lti = {}
 for i, entry in enumerate(labelset):
     lti[entry] = i
-print(lti)
 itl = {value:key for (key, value) in lti.items()}
 
 norm_transform = transforms.Compose([
@@ -48,6 +46,6 @@ cnn = CNN().to(device)
 epochs = 20
 optimizer = "SGD"
 loss = "cross_entropy"
-train(loss, optimizer, cnn, train_dataloader, test_dataloader, epochs, device, lti, itl)
-#cnn.load_state_dict(torch.load('./butterlynet.pth'))
-#evaluate(cnn, test_dataloader, itl, lti, device)
+#train(loss, optimizer, cnn, train_dataloader, test_dataloader, epochs, device, lti, itl)
+cnn.load_state_dict(torch.load('./butterlynet.pth'))
+evaluate(cnn, test_dataloader, itl, lti, device)
