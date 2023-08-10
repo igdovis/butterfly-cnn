@@ -13,7 +13,7 @@ class CNN(nn.Module):
         self.conv4 = nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1)
         self.conv5 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)
         self.conv6 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
-        self.fc1 = nn.Linear(10368, 1024)
+        self.fc1 = nn.Linear(18432, 1024)
         self.fc2 = nn.Linear(1024, 512)
         self.fc3 = nn.Linear(512, 75)
 

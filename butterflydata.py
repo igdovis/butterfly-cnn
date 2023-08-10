@@ -1,8 +1,10 @@
+import io
+
 from torch.utils.data import Dataset
 import os 
 import pandas as pd
 from torchvision.io import read_image
-
+from PIL import Image
 class ButterflyDataset(Dataset):
     def __init__(self, labels, img_dir, transform=None, target_transform=None):
         self.image_labels = pd.read_csv(labels)
@@ -15,6 +17,7 @@ class ButterflyDataset(Dataset):
     
     def __getitem__(self, index):
         img_path = os.path.join(self.img_dir, self.image_labels.iloc[index, 0])
+        #image = Image.open(io.BytesIO(img_path))
         image = read_image(img_path).float()
         label = self.image_labels.iloc[index, 1]
         if self.transform:
@@ -22,6 +25,8 @@ class ButterflyDataset(Dataset):
         if self.target_transform:
             label = self.target_transform(label)
         return image, label
+
+
 
 
     
